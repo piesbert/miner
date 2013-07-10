@@ -22,6 +22,7 @@ Config::Config() {
         m_glWidth  = 1024;
         m_glHeight = 768;
         m_glMode   = GLUT_DOUBLE | GLUT_RGBA;
+        m_glFov    = 90;
 }
 
 Config::~Config() {
@@ -37,4 +38,8 @@ int Config::glHeight() const {
 
 unsigned int Config::glMode() const {
         return m_glMode;
+}
+
+unsigned int Config::glFov() const {
+        return m_glFov;
 }

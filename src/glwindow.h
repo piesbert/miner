@@ -25,16 +25,14 @@ class GlWindow {
                 GlWindow(int *, char **);
                 virtual ~GlWindow();
 
-                void init(Config *, GlScene *);
+                void init();
                 void start() const;
 
         private:
                 void initGlew() const;
                 
-                static void render();
-
-                static Config  *s_config;
-                static GlScene *s_scene;
+                Config  *m_config;
+                GlScene *m_scene;
 
                 GlWindow(GlWindow const&); // do not implement
                 GlWindow operator=(GlWindow const&); // do not implement

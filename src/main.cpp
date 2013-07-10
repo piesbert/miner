@@ -24,10 +24,8 @@
 int main(int argc, char** argv)
 {
         GlWindow window(&argc, argv);
-        GlScene  scene;
-        Config   config;
 
-        window.init(&config, &scene);
+        window.init();
         window.start();
 
         return 0;

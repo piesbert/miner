@@ -23,22 +23,22 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 
-Config  *GlWindow::s_config = 0;
-GlScene *GlWindow::s_scene  = 0;
-
-GlWindow::GlWindow(int *c, char **v) {
+GlWindow::GlWindow(int *c, char **v) 
+: m_config(0), m_scene(0) {
         glutInit(c, v);
+        
+        m_config = new Config();
+        m_scene  = new GlScene(m_config);
 }
 
 GlWindow::~GlWindow() {
+        delete m_scene;
+        delete m_config;
 }
 
-void GlWindow::init(Config *config, GlScene *scene) {
-        s_config = config;
-        s_scene  = scene;
-
-        glutInitDisplayMode(s_config->glMode());
-        glutInitWindowSize(s_config->glWidth(), s_config->glHeight());
+void GlWindow::init() {
+        glutInitDisplayMode(m_config->glMode());
+        glutInitWindowSize(m_config->glWidth(), m_config->glHeight());
 
         glutCreateWindow(APP_NAME);
 
@@ -46,9 +46,9 @@ void GlWindow::init(Config *config, GlScene *scene) {
 }
 
 void GlWindow::start() const {
-        glutDisplayFunc(render);
+        m_scene->init();
+        
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
         glutMainLoop();
 }
 
@@ -59,11 +59,5 @@ void GlWindow::initGlew() const {
 
         if (GLEW_OK != res) {
                 LOGERR("GLEW init error: " << glewGetErrorString(res));
-        }
-}
-
-void GlWindow::render() {
-        if (s_scene) {
-                s_scene->render();
         }
 }

@@ -15,16 +15,97 @@
  */
 
 #include "glscene.h"
+#include "config.h"
+#include "log.h"
 
 #include <GL/glut.h>
 
-GlScene::GlScene() {
+GlScene *GlScene::s_this = 0;
+
+GlScene::GlScene(Config *config) : m_config(config) {
+        s_this = this;
 }
 
 GlScene::~GlScene() {
 }
 
-void GlScene::render() const {
-        glClear(GL_COLOR_BUFFER_BIT);
+void GlScene::init() {
+        glutDisplayFunc(f_display);
+        glutReshapeFunc(f_reshape);
+}
+
+void GlScene::display() const {
+        glClearColor( 0.0, 0.0, 0.0, 0.0 );
+        glClear( GL_COLOR_BUFFER_BIT );
+        glMatrixMode( GL_MODELVIEW );
+        glLoadIdentity();
+        glTranslatef( 0, 0, - 3.0 );
+        glColor3f( 1.0, 0.0, 0.0 );
+        glBegin( GL_LINES );
+        
+        glVertex3f( 1.0, 1.0, 1.0 );
+        glVertex3f( 1.0, - 1.0, 1.0 );
+
+        glVertex3f( 1.0, - 1.0, 1.0 );
+        glVertex3f( 1.0, - 1.0, - 1.0 );
+
+        glVertex3f( 1.0, - 1.0, - 1.0 );
+        glVertex3f( 1.0, 1.0, - 1.0 );
+
+        glVertex3f( 1.0, 1.0, - 1.0 );
+        glVertex3f( 1.0, 1.0, 1.0 );
+
+        glVertex3f( - 1.0, 1.0, 1.0 );
+        glVertex3f( - 1.0, - 1.0, 1.0 );
+
+        glVertex3f( - 1.0, - 1.0, 1.0 );
+        glVertex3f( - 1.0, - 1.0, - 1.0 );
+
+        glVertex3f( - 1.0, - 1.0, - 1.0 );
+        glVertex3f( - 1.0, 1.0, - 1.0 );
+
+        glVertex3f( - 1.0, 1.0, - 1.0 );
+        glVertex3f( - 1.0, 1.0, 1.0 );
+
+        glVertex3f( 1.0, 1.0, 1.0 );
+        glVertex3f( - 1.0, 1.0, 1.0 );
+
+        glVertex3f( 1.0, - 1.0, 1.0 );
+        glVertex3f( - 1.0, - 1.0, 1.0 );
+
+        glVertex3f( 1.0, - 1.0, - 1.0 );
+        glVertex3f( - 1.0, - 1.0, - 1.0 );
+
+        glVertex3f( 1.0, 1.0, - 1.0 );
+        glVertex3f( - 1.0, 1.0, - 1.0 );
+
+        glEnd();
+
+        glFlush();
+
         glutSwapBuffers();
+}
+
+void GlScene::reshape(int width, int height) const {
+        GLdouble aspect = 1;
+        
+        glViewport(0, 0, width, height);
+        glMatrixMode( GL_PROJECTION );
+        glLoadIdentity();
+        
+        if( height > 0 ) {
+                aspect = width / (GLdouble)(height);
+        }
+
+        gluPerspective((GLdouble)(m_config->glFov()), aspect, 1.0, 5.0 );
+
+        display();
+}
+
+void GlScene::f_display() {
+        s_this->display();
+}
+
+void GlScene::f_reshape(int width, int height) {
+        s_this->reshape(width, height);
 }

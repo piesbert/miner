@@ -26,12 +26,14 @@ class Config {
                 int glHeight() const;
 
                 unsigned int glMode() const;
+                unsigned int glFov() const;
 
         private:
                 int m_glWidth;
                 int m_glHeight;
 
                 unsigned int m_glMode;
+                unsigned int m_glFov;
 
                 Config(Config const&); // do not implement
                 Config operator=(Config const&); // do not implement
