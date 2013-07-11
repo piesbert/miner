@@ -16,12 +16,12 @@
 
 #include "config.h"
 
-#include <GL/glut.h>
+#include <SDL/SDL.h>
 
 Config::Config() {
         m_glWidth  = 1024;
         m_glHeight = 768;
-        m_glMode   = GLUT_DOUBLE | GLUT_RGBA;
+        m_glMode   = SDL_OPENGL | SDL_RESIZABLE;
         m_glFov    = 90;
 }
 
@@ -32,8 +32,16 @@ int Config::glWidth() const {
         return m_glWidth;
 }
 
+void Config::set_glWidth(int width) {
+        m_glWidth = width;
+}
+
 int Config::glHeight() const {
         return m_glHeight;
+}
+
+void Config::set_glHeight(int height) {
+        m_glHeight = height;
 }
 
 unsigned int Config::glMode() const {

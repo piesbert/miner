@@ -18,20 +18,13 @@
 #include "config.h"
 #include "log.h"
 
-#include <GL/glut.h>
-
-GlScene *GlScene::s_this = 0;
+#include <GL/gl.h>
+#include <GL/glu.h>
 
 GlScene::GlScene(Config *config) : m_config(config) {
-        s_this = this;
 }
 
 GlScene::~GlScene() {
-}
-
-void GlScene::init() {
-        glutDisplayFunc(f_display);
-        glutReshapeFunc(f_reshape);
 }
 
 void GlScene::display() const {
@@ -82,8 +75,6 @@ void GlScene::display() const {
         glEnd();
 
         glFlush();
-
-        glutSwapBuffers();
 }
 
 void GlScene::reshape(int width, int height) const {
@@ -100,12 +91,4 @@ void GlScene::reshape(int width, int height) const {
         gluPerspective((GLdouble)(m_config->glFov()), aspect, 1.0, 5.0 );
 
         display();
-}
-
-void GlScene::f_display() {
-        s_this->display();
-}
-
-void GlScene::f_reshape(int width, int height) {
-        s_this->reshape(width, height);
 }

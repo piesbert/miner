@@ -29,10 +29,10 @@ class GlWindow {
                 void start() const;
 
         private:
-                void initGlew() const;
-                
                 Config  *m_config;
                 GlScene *m_scene;
+
+                void resize(int, int) const;
 
                 GlWindow(GlWindow const&); // do not implement
                 GlWindow operator=(GlWindow const&); // do not implement

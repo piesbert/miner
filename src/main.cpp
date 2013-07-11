@@ -14,12 +14,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "build.h"
 #include "glwindow.h"
-#include "glscene.h"
-#include "config.h"
-
-#include <GL/glut.h>
 
 int main(int argc, char** argv)
 {

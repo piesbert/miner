@@ -22,8 +22,11 @@ class Config {
                 Config();
                 virtual ~Config();
 
-                int glWidth() const;
-                int glHeight() const;
+                int  glWidth() const;
+                void set_glWidth(int);
+
+                int  glHeight() const;
+                void set_glHeight(int);
 
                 unsigned int glMode() const;
                 unsigned int glFov() const;

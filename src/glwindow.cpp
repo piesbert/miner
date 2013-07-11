@@ -20,13 +20,12 @@
 #include "config.h"
 #include "log.h"
 
-#include <GL/glew.h>
-#include <GL/glut.h>
+#include <SDL/SDL.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 
 GlWindow::GlWindow(int *c, char **v) 
 : m_config(0), m_scene(0) {
-        glutInit(c, v);
-        
         m_config = new Config();
         m_scene  = new GlScene(m_config);
 }
@@ -34,30 +33,70 @@ GlWindow::GlWindow(int *c, char **v)
 GlWindow::~GlWindow() {
         delete m_scene;
         delete m_config;
+
+        SDL_Quit();
 }
 
 void GlWindow::init() {
-        glutInitDisplayMode(m_config->glMode());
-        glutInitWindowSize(m_config->glWidth(), m_config->glHeight());
+        if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+                LOGERR("SDL init failed: " << SDL_GetError());
+        }
 
-        glutCreateWindow(APP_NAME);
+        SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
+        SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
+        SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
+        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+        
+        resize(m_config->glWidth(), m_config->glHeight());
+}
 
-        initGlew();
+void GlWindow::resize(int width, int height) const {
+        const SDL_VideoInfo *vInfo    = 0;
+        const SDL_Surface   *vSurface = 0;
+
+        vInfo = SDL_GetVideoInfo();
+
+        if (0 == vInfo) {
+                LOGERR("Video query failed: " << SDL_GetError());
+        }
+
+        vSurface = SDL_SetVideoMode(width, height, vInfo->vfmt->BitsPerPixel, m_config->glMode());
+
+        if (0 == vSurface) {
+                LOGERR("Video mode set failed: " << SDL_GetError());
+        }
+
+        m_scene->reshape(width, height);
+
+        m_config->set_glWidth(width);
+        m_config->set_glHeight(height);
 }
 
 void GlWindow::start() const {
-        m_scene->init();
+        SDL_Event ev;
+        bool running;
         
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glutMainLoop();
-}
+        running = true;
 
-void GlWindow::initGlew() const {
-        GLenum res;
+        while (running) {
+                while (SDL_PollEvent(&ev)) {
+                        switch (ev.type) {
+                                case SDL_QUIT: {
+                                        running = false;
+                                        break;
+                                }
+                                case SDL_VIDEORESIZE: {
+                                        resize(ev.resize.w, ev.resize.h);
+                                        break;
+                                }
+                                default: {
+                                        break;
+                                }
+                        }
+                }
 
-        res = glewInit();
-
-        if (GLEW_OK != res) {
-                LOGERR("GLEW init error: " << glewGetErrorString(res));
+                m_scene->display();
+                SDL_GL_SwapBuffers();
         }
 }

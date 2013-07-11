@@ -24,18 +24,11 @@ class GlScene {
                 GlScene(Config *);
                 virtual ~GlScene();
 
-                void init();
-
                 void display() const;
                 void reshape(int, int) const;
 
         private:
                 const Config *m_config;
-
-                static GlScene *s_this;
-
-                static void f_display();
-                static void f_reshape(int, int);
 
                 GlScene(GlScene const&); // do not implement
                 GlScene operator=(GlScene const&); // do not implement
