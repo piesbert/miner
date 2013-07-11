@@ -15,6 +15,7 @@
  */
 
 #include "actionmanager.h"
+#include "motionstate.h"
 #include "log.h"
 
 #include <SDL/SDL.h>
@@ -54,19 +55,19 @@ void ActionManager::handleEvent(const SDL_Event &ev) const {
 void ActionManager::runAction(ActionId action, Action::State state) const {
         switch(action) {
                 case ACTION_FORWARD:
-                        LOGINF("FORWARD " << (state == Action::STATE_PRESSED ? "on" : "off"));
+                        MotionState::getInstance().setForward(state == Action::STATE_PRESSED ? true : false);
                         break;
                 case ACTION_BACKWARD:
-                        LOGINF("BACKWARD " << (state == Action::STATE_PRESSED ? "on" : "off"));
+                        MotionState::getInstance().setBackward(state == Action::STATE_PRESSED ? true : false);
                         break;
                 case ACTION_STRAFE_LEFT:
-                        LOGINF("LEFT " << (state == Action::STATE_PRESSED ? "on" : "off"));
+                        MotionState::getInstance().setLeft(state == Action::STATE_PRESSED ? true : false);
                         break;
                 case ACTION_STRAFE_RIGHT:
-                        LOGINF("RIGHT " << (state == Action::STATE_PRESSED ? "on" : "off"));
+                        MotionState::getInstance().setRight(state == Action::STATE_PRESSED ? true : false);
                         break;
                 case ACTION_JUMP:
-                        LOGINF("JUMP " << (state == Action::STATE_PRESSED ? "on" : "off"));
+                        MotionState::getInstance().setJump(state == Action::STATE_PRESSED ? true : false);
                         break;
                 case ACTION_USE:
                         LOGINF("USE " << (state == Action::STATE_PRESSED ? "on" : "off"));

@@ -6,6 +6,7 @@ set(SOURCE_FILES
                 input.cpp
                 action.cpp
                 actionmanager.cpp
+                motionstate.cpp
                 )
 
 add_executable(miner ${SOURCE_FILES} )
