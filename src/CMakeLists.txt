@@ -3,6 +3,9 @@ set(SOURCE_FILES
                 config.cpp
                 glwindow.cpp
                 glscene.cpp
+                input.cpp
+                action.cpp
+                actionmanager.cpp
                 )
 
 add_executable(miner ${SOURCE_FILES} )

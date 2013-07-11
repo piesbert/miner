@@ -16,6 +16,7 @@
 
 #include "glwindow.h"
 #include "glscene.h"
+#include "actionmanager.h"
 #include "build.h"
 #include "config.h"
 #include "log.h"
@@ -25,12 +26,15 @@
 #include <GL/glu.h>
 
 GlWindow::GlWindow(int *c, char **v) 
-: m_config(0), m_scene(0) {
+: m_config(0), m_scene(0), m_actionManager(0) {
         m_config = new Config();
         m_scene  = new GlScene(m_config);
+
+        m_actionManager  = new ActionManager();
 }
 
 GlWindow::~GlWindow() {
+        delete m_actionManager;
         delete m_scene;
         delete m_config;
 
@@ -88,6 +92,13 @@ void GlWindow::start() const {
                                 }
                                 case SDL_VIDEORESIZE: {
                                         resize(ev.resize.w, ev.resize.h);
+                                        break;
+                                }
+                                case SDL_KEYDOWN:
+                                case SDL_KEYUP:
+                                case SDL_MOUSEBUTTONDOWN:
+                                case SDL_MOUSEBUTTONUP: {
+                                        m_actionManager->handleEvent(ev);
                                         break;
                                 }
                                 default: {

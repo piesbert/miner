@@ -1,4 +1,4 @@
-/* Miner: glwindow.h
+/* Miner: input.h
  * Copyright (C) 2012-2013 Sebastian Szymak
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,31 +14,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined(LOCK_MINER_GLWINDOW_H)
-#define LOCK_MINER_GLWINDOW_H
+#if !defined(LOCK_MINER_INPUT_H)
+#define LOCK_MINER_INPUT_H
 
-class Config;
-class GlScene;
+union SDL_Event;
+
 class ActionManager;
 
-class GlWindow {
+class Input {
         public:
-                GlWindow(int *, char **);
-                virtual ~GlWindow();
+                Input();
+                virtual ~Input();
 
-                void init();
-                void start() const;
+                void handle(const SDL_Event &) const;
 
         private:
-                Config  *m_config;
-                GlScene *m_scene;
-
                 ActionManager *m_actionManager;
 
-                void resize(int, int) const;
+                Input(Input const&); // do not implement
+                Input operator=(Input const&); // do not implement
+}; // class Input
 
-                GlWindow(GlWindow const&); // do not implement
-                GlWindow operator=(GlWindow const&); // do not implement
-}; // class GlWindow
-
-#endif //LOCK_MINER_GLWINDOW_H
+#endif //LOCK_MINER_INPUT_H
