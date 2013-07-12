@@ -20,6 +20,7 @@
 #include "action.h"
 
 union SDL_Event;
+class GlWindow;
 
 class ActionManager {
         public:
@@ -31,17 +32,19 @@ class ActionManager {
                         ACTION_STRAFE_RIGHT,
                         ACTION_JUMP,
                         ACTION_USE,
+                        ACTION_QUIT,
                         ACTION_MAX
                 };
                 
                 void configure(ActionId, Action::DeviceId, int);
                 void handleEvent(const SDL_Event &) const;
 
-                ActionManager();
+                ActionManager(GlWindow *);
                 virtual ~ActionManager();
 
         private:
-                Action m_actions[ACTION_MAX];
+                GlWindow *m_window;
+                Action    m_actions[ACTION_MAX];
 
                 void defaultConfig();
                 void runAction(ActionId, Action::State) const;

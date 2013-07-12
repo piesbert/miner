@@ -15,12 +15,14 @@
  */
 
 #include "actionmanager.h"
+#include "glwindow.h"
 #include "motionstate.h"
 #include "log.h"
 
 #include <SDL/SDL.h>
 
-ActionManager::ActionManager() {
+ActionManager::ActionManager(GlWindow *window) :
+m_window(window) {
         defaultConfig();
 }
 
@@ -35,6 +37,7 @@ void ActionManager::defaultConfig() {
         m_actions[ACTION_STRAFE_RIGHT].configure(Action::DEVICE_KEYBOARD, SDLK_d);
         m_actions[ACTION_JUMP].configure(Action::DEVICE_KEYBOARD, SDLK_SPACE);
         m_actions[ACTION_USE].configure(Action::DEVICE_MOUSE, SDL_BUTTON_LEFT);
+        m_actions[ACTION_QUIT].configure(Action::DEVICE_KEYBOARD, SDLK_ESCAPE);
 }
 
 void ActionManager::handleEvent(const SDL_Event &ev) const {
@@ -71,6 +74,9 @@ void ActionManager::runAction(ActionId action, Action::State state) const {
                         break;
                 case ACTION_USE:
                         LOGINF("USE " << (state == Action::STATE_PRESSED ? "on" : "off"));
+                        break;
+                case ACTION_QUIT:
+                        m_window->quit();
                         break;
                 default:
                         break;

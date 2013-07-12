@@ -17,6 +17,7 @@
 #if !defined(LOCK_MINER_GLSCENE_H)
 #define LOCK_MINER_GLSCENE_H
 
+class GlCamera;
 class Config;
 
 class GlScene {
@@ -25,9 +26,12 @@ class GlScene {
                 virtual ~GlScene();
 
                 void display() const;
-                void reshape(int, int) const;
+                void reshape(int, int);
+
+                void move();
 
         private:
+                GlCamera     *m_camera;
                 const Config *m_config;
 
                 GlScene(GlScene const&); // do not implement

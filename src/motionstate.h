@@ -30,6 +30,11 @@ class MotionState {
                 void setPitch(float);
                 void setYaw(float);
 
+                bool getForward()  const { return m_forward; };
+                bool getBackward() const { return m_backward; };
+                bool getLeft()     const { return m_left; };
+                bool getRight()    const { return m_right; };
+
         private:
                 bool m_forward;
                 bool m_backward;

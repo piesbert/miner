@@ -25,12 +25,15 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-GlWindow::GlWindow(int *c, char **v) 
-: m_config(0), m_scene(0), m_actionManager(0) {
+GlWindow::GlWindow(int *c, char **v) :
+m_config(0),
+m_scene(0),
+m_actionManager(0),
+m_running(true) {
         m_config = new Config();
         m_scene  = new GlScene(m_config);
 
-        m_actionManager  = new ActionManager();
+        m_actionManager  = new ActionManager(this);
 }
 
 GlWindow::~GlWindow() {
@@ -39,6 +42,7 @@ GlWindow::~GlWindow() {
         delete m_config;
 
         SDL_Quit();
+        LOGINF("Closing app .. done!");
 }
 
 void GlWindow::init() {
@@ -71,23 +75,22 @@ void GlWindow::resize(int width, int height) const {
                 LOGERR("Video mode set failed: " << SDL_GetError());
         }
 
+        SDL_ShowCursor(0);
+
         m_scene->reshape(width, height);
 
         m_config->set_glWidth(width);
         m_config->set_glHeight(height);
 }
 
-void GlWindow::start() const {
+void GlWindow::start() {
         SDL_Event ev;
-        bool running;
         
-        running = true;
-
-        while (running) {
+        while (m_running) {
                 while (SDL_PollEvent(&ev)) {
                         switch (ev.type) {
                                 case SDL_QUIT: {
-                                        running = false;
+                                        quit();
                                         break;
                                 }
                                 case SDL_VIDEORESIZE: {
@@ -106,8 +109,13 @@ void GlWindow::start() const {
                                 }
                         }
                 }
-
+                
+                m_scene->move();
                 m_scene->display();
                 SDL_GL_SwapBuffers();
         }
+}
+
+void GlWindow::quit() {
+        m_running = false;
 }

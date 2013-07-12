@@ -27,13 +27,16 @@ class GlWindow {
                 virtual ~GlWindow();
 
                 void init();
-                void start() const;
+                void start();
+                void quit();
 
         private:
                 Config  *m_config;
                 GlScene *m_scene;
 
                 ActionManager *m_actionManager;
+
+                bool m_running;
 
                 void resize(int, int) const;
 

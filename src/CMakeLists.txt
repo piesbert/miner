@@ -3,7 +3,7 @@ set(SOURCE_FILES
                 config.cpp
                 glwindow.cpp
                 glscene.cpp
-                input.cpp
+                glcamera.cpp
                 action.cpp
                 actionmanager.cpp
                 motionstate.cpp
