@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include <libgen.h>
+#include <stdlib.h>
 
 #if defined(FULL_PREFIX)
 #define PREFIX basename((char *)__FILE__) << "(" << __LINE__ << ") in " << __FUNCTION__ << "(): "

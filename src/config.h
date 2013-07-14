@@ -39,7 +39,7 @@ class Config {
                 unsigned int m_glFov;
 
                 Config(Config const&); // do not implement
-                Config operator=(Config const&); // do not implement
+                Config& operator=(Config const&); // do not implement
 }; // class Config
 
 #endif //LOCK_MINER_CONFIG_H

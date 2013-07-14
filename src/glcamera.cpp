@@ -119,3 +119,15 @@ void GlCamera::move() {
                offsetPosition(0.05f * right());
        }
 }
+
+glm::mat4 GlCamera::matrix() const {
+            return projection() * view();
+}
+
+glm::mat4 GlCamera::projection() const {
+            return glm::perspective(m_fov, (4.0f / 3.0f), m_near, m_far);
+}
+
+glm::mat4 GlCamera::view() const {
+            return getOrientation() * glm::translate(glm::mat4(), -m_position);
+}

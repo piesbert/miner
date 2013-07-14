@@ -47,7 +47,7 @@ class MotionState {
 
                 MotionState();
                 MotionState(MotionState const&); // do not implement
-                MotionState operator=(MotionState const&); // do not implement
+                MotionState& operator=(MotionState const&); // do not implement
 }; // class MotionState
 
 #endif //LOCK_MINER_MOTIONSTATE_H

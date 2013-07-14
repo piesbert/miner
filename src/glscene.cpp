@@ -23,6 +23,7 @@
 #include <GL/glu.h>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 GlScene::GlScene(Config *config)
 : m_camera(0),
@@ -42,6 +43,7 @@ void GlScene::display() const {
 
         glMatrixMode( GL_MODELVIEW );
         glLoadIdentity();
+//        glMultMatrixf(glm::value_ptr(m_camera->matrix()));
         glTranslatef(pos.x, pos.y, pos.z);
         glColor3f( 1.0, 0.0, 0.0 );
 
@@ -91,7 +93,6 @@ void GlScene::display() const {
 void GlScene::reshape(int width, int height) {
         GLdouble aspect;
 
-        
         glViewport(0, 0, width, height);
         glMatrixMode( GL_PROJECTION );
         glLoadIdentity();

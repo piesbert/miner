@@ -40,6 +40,10 @@ class GlCamera {
 
                 void move();
 
+                glm::mat4 matrix() const;
+                glm::mat4 projection() const;
+                glm::mat4 view() const;
+
         private:
                 glm::vec3 m_position;
 
@@ -55,7 +59,7 @@ class GlCamera {
                 static const float s_vAngleMax;
 
                 GlCamera(GlCamera const&); // do not implement
-                GlCamera operator=(GlCamera const&); // do not implement
+                GlCamera& operator=(GlCamera const&); // do not implement
 }; // class GlCamera
 
 #endif //LOCK_MINER_GLCAMERA_H

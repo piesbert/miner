@@ -14,16 +14,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+
+#include <SDL/SDL.h>
+
 #include "glwindow.h"
 #include "glscene.h"
 #include "actionmanager.h"
 #include "build.h"
 #include "config.h"
 #include "log.h"
-
-#include <SDL/SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
 
 GlWindow::GlWindow(int *c, char **v) :
 m_config(0),
@@ -55,8 +57,12 @@ void GlWindow::init() {
         SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-        
+
         resize(m_config->glWidth(), m_config->glHeight());
+        
+        if (glewInit() != GLEW_OK) {
+                LOGERR("GLEW init failed");
+        }
 }
 
 void GlWindow::resize(int width, int height) const {

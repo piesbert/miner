@@ -50,7 +50,7 @@ class ActionManager {
                 void runAction(ActionId, Action::State) const;
 
                 ActionManager(ActionManager const&); // do not implement
-                ActionManager operator=(ActionManager const&); // do not implement
+                ActionManager& operator=(ActionManager const&); // do not implement
 }; // class ActionManager
 
 #endif //LOCK_MINER_ACTIONMANAGER_H

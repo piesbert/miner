@@ -44,7 +44,7 @@ class Action {
                 int      m_code;
 
                 Action(Action const&); // do not implement
-                Action operator=(Action const&); // do not implement
+                Action& operator=(Action const&); // do not implement
 }; // class Action
 
 #endif //LOCK_MINER_ACTION_H

@@ -41,7 +41,7 @@ class GlWindow {
                 void resize(int, int) const;
 
                 GlWindow(GlWindow const&); // do not implement
-                GlWindow operator=(GlWindow const&); // do not implement
+                GlWindow& operator=(GlWindow const&); // do not implement
 }; // class GlWindow
 
 #endif //LOCK_MINER_GLWINDOW_H

@@ -1,4 +1,4 @@
-/* Miner: glscene.h
+/* Miner: glshader.h
  * Copyright (C) 2012-2013 Sebastian Szymak
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,28 +14,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined(LOCK_MINER_GLSCENE_H)
-#define LOCK_MINER_GLSCENE_H
+#if !defined(LOCK_MINER_GLSHADER_H)
+#define LOCK_MINER_GLSHADER_H
 
-class GlCamera;
-class Config;
+#include <GL/glew.h>
+#include <string>
 
-class GlScene {
+class GlShader {
         public:
-                GlScene(Config *);
-                virtual ~GlScene();
+                GlShader(const std::string &, GLenum);
+                virtual ~GlShader();
 
-                void display() const;
-                void reshape(int, int);
+                GLuint getId() const;
 
-                void move();
+                static GlShader fromFile(const std::string &, GLenum);
 
+                GlShader(GlShader const&);
+                GlShader& operator=(GlShader const&);
         private:
-                GlCamera     *m_camera;
-                const Config *m_config;
+                GLuint        m_id;
+                unsigned int *m_refCount;
 
-                GlScene(GlScene const&); // do not implement
-                GlScene& operator=(GlScene const&); // do not implement
-}; // class GlScene
+                void keep();
+                void release();
+}; // class GlShader
 
-#endif //LOCK_MINER_GLSCENE_H
+#endif //LOCK_MINER_GLSHADER_H
