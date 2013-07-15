@@ -30,7 +30,7 @@ m_refCount(0) {
 
         char* info;
 
-        m_id =glCreateShader(type);
+        m_id = glCreateShader(type);
 
         if (0 == m_id) {
                 LOGERR("Failed to create shader.");
@@ -53,6 +53,8 @@ m_refCount(0) {
                 m_id = 0;
         }
 
+        m_refCount = new unsigned int;
+        *m_refCount = 1;
 }
 
 GlShader::GlShader(const GlShader& shader) :
@@ -94,7 +96,8 @@ GlShader GlShader::fromFile(const std::string &path, GLenum type) {
         
         stringStream << fileStream.rdbuf();
 
-        return GlShader(stringStream.str(), type);
+        GlShader shader(stringStream.str(), type);
+        return shader;
 }
 
 void GlShader::keep() {

@@ -17,9 +17,13 @@
 #if !defined(LOCK_MINER_GLWINDOW_H)
 #define LOCK_MINER_GLWINDOW_H
 
+#include <vector>
+
 class Config;
 class GlScene;
 class ActionManager;
+class GlProgram;
+class GlShader;
 
 class GlWindow {
         public:
@@ -31,14 +35,15 @@ class GlWindow {
                 void quit();
 
         private:
-                Config  *m_config;
-                GlScene *m_scene;
+                Config    *m_config;
+                GlScene   *m_scene;
 
                 ActionManager *m_actionManager;
 
                 bool m_running;
 
                 void resize(int, int) const;
+                void loadShaders();
 
                 GlWindow(GlWindow const&); // do not implement
                 GlWindow& operator=(GlWindow const&); // do not implement

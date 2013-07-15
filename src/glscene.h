@@ -17,8 +17,12 @@
 #if !defined(LOCK_MINER_GLSCENE_H)
 #define LOCK_MINER_GLSCENE_H
 
+#include "glshader.h"
+#include <vector>
+
 class GlCamera;
 class Config;
+class GlProgram;
 
 class GlScene {
         public:
@@ -29,10 +33,14 @@ class GlScene {
                 void reshape(int, int);
 
                 void move();
+                void loadShaders();
 
         private:
                 GlCamera     *m_camera;
                 const Config *m_config;
+
+                GlProgram            *m_program;
+                std::vector<GlShader> m_shaders;
 
                 GlScene(GlScene const&); // do not implement
                 GlScene& operator=(GlScene const&); // do not implement

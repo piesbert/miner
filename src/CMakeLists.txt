@@ -5,6 +5,7 @@ set(SOURCE_FILES
                 glscene.cpp
                 glcamera.cpp
                 glshader.cpp
+                glprogram.cpp
                 action.cpp
                 actionmanager.cpp
                 motionstate.cpp

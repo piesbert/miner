@@ -16,6 +16,8 @@
 
 #include "glscene.h"
 #include "glcamera.h"
+#include "glprogram.h"
+#include "build.h"
 #include "config.h"
 #include "log.h"
 
@@ -25,13 +27,15 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-GlScene::GlScene(Config *config)
-: m_camera(0),
-  m_config(config) {
+GlScene::GlScene(Config *config) :
+m_camera(0),
+m_config(config),
+m_program(0) {
           m_camera = new GlCamera();
 }
 
 GlScene::~GlScene() {
+        delete m_program;
         delete m_camera;
 }
 
@@ -43,7 +47,7 @@ void GlScene::display() const {
 
         glMatrixMode( GL_MODELVIEW );
         glLoadIdentity();
-//        glMultMatrixf(glm::value_ptr(m_camera->matrix()));
+        //glMultMatrixf(glm::value_ptr(m_camera->matrix()));
         glTranslatef(pos.x, pos.y, pos.z);
         glColor3f( 1.0, 0.0, 0.0 );
 
@@ -102,9 +106,18 @@ void GlScene::reshape(int width, int height) {
         }
 
         gluPerspective((GLdouble)(m_config->glFov()), aspect, 0.01, 100.0 );
-        display();
+        if (0 != m_program) {
+                display();
+        }
 }
 
 void GlScene::move() {
         m_camera->move();
+}
+
+void GlScene::loadShaders() {
+        m_shaders.push_back(GlShader::fromFile(SHADERS_PATH + "shader.vert", GL_VERTEX_SHADER));
+        m_shaders.push_back(GlShader::fromFile(SHADERS_PATH + "shader.frag", GL_FRAGMENT_SHADER));
+
+        m_program = new GlProgram(m_shaders);
 }

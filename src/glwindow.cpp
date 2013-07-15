@@ -22,6 +22,7 @@
 
 #include "glwindow.h"
 #include "glscene.h"
+#include "glprogram.h"
 #include "actionmanager.h"
 #include "build.h"
 #include "config.h"
@@ -63,6 +64,8 @@ void GlWindow::init() {
         if (glewInit() != GLEW_OK) {
                 LOGERR("GLEW init failed");
         }
+
+        m_scene->loadShaders();
 }
 
 void GlWindow::resize(int width, int height) const {
