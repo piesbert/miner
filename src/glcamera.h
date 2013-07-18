@@ -19,6 +19,8 @@
 
 #include <glm/glm.hpp>
 
+class MotionState;
+
 class GlCamera {
         public:
                 GlCamera();
@@ -59,6 +61,8 @@ class GlCamera {
                 static const float s_fovMin;
 
                 static const float s_vAngleMax;
+
+                static MotionState &motionState;
 
                 GlCamera(GlCamera const&); // do not implement
                 GlCamera& operator=(GlCamera const&); // do not implement

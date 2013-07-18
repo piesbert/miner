@@ -23,6 +23,8 @@ const float GlCamera::s_fovMax = 90.0f;
 const float GlCamera::s_fovMin = 20.0f;
 const float GlCamera::s_vAngleMax = 80.0f;
 
+MotionState &GlCamera::motionState = MotionState::getInstance();
+
 GlCamera::GlCamera() :
 m_position(0.0f, 0.0f, 3.0f),
 m_fov(50.0f),
@@ -110,23 +112,22 @@ void GlCamera::setAspect(float aspect) {
 }
 
 void GlCamera::move() {
-       if (MotionState::getInstance().getForward()) {
+       if (motionState.getForward()) {
                offsetPosition(0.1f * forward());
        }
 
-       if (MotionState::getInstance().getBackward()) {
+       if (motionState.getBackward()) {
                offsetPosition(0.1f * -forward());
        }
 
-       if (MotionState::getInstance().getLeft()) {
+       if (motionState.getLeft()) {
                offsetPosition(0.1f * -right());
        }
 
-       if (MotionState::getInstance().getRight()) {
+       if (motionState.getRight()) {
                offsetPosition(0.1f * right());
        }
-
-       offsetOrientation(MotionState::getInstance().getPitch(), MotionState::getInstance().getYaw());
+       offsetOrientation(motionState.getPitch(), motionState.getYaw());
 }
 
 glm::mat4 GlCamera::matrix() const {

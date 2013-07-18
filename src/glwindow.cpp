@@ -29,7 +29,7 @@
 #include "config.h"
 #include "log.h"
 
-GlWindow::GlWindow(int *c, char **v) :
+GlWindow::GlWindow() :
 m_config(0),
 m_scene(0),
 m_actionManager(0),

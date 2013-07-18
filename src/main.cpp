@@ -16,9 +16,9 @@
 
 #include "glwindow.h"
 
-int main(int argc, char** argv)
+int main()
 {
-        GlWindow window(&argc, argv);
+        GlWindow window;
 
         window.init();
         window.start();

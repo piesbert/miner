@@ -27,7 +27,7 @@ class GlShader;
 
 class GlWindow {
         public:
-                GlWindow(int *, char **);
+                GlWindow();
                 virtual ~GlWindow();
 
                 void init();
