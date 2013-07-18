@@ -35,6 +35,9 @@ class MotionState {
                 bool getLeft()     const { return m_left; };
                 bool getRight()    const { return m_right; };
 
+                float getPitch()   const { return m_pitch; };
+                float getYaw()     const { return m_yaw; };
+
         private:
                 bool m_forward;
                 bool m_backward;

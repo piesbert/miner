@@ -38,6 +38,7 @@ class GlCamera {
                 float getFov() const;
                 void setFov(float);
 
+                void setAspect(float);
                 void move();
 
                 glm::mat4 matrix() const;
@@ -52,6 +53,7 @@ class GlCamera {
                 float m_far;
                 float m_vAngle;
                 float m_hAngle;
+                float m_aspect;
 
                 static const float s_fovMax;
                 static const float s_fovMin;

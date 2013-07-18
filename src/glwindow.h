@@ -41,6 +41,7 @@ class GlWindow {
                 ActionManager *m_actionManager;
 
                 bool m_running;
+                unsigned int m_ticks;
 
                 void resize(int, int) const;
                 void loadShaders();

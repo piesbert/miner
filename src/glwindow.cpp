@@ -24,6 +24,7 @@
 #include "glscene.h"
 #include "glprogram.h"
 #include "actionmanager.h"
+#include "motionstate.h"
 #include "build.h"
 #include "config.h"
 #include "log.h"
@@ -65,6 +66,9 @@ void GlWindow::init() {
                 LOGERR("GLEW init failed");
         }
 
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
+
         m_scene->loadShaders();
 }
 
@@ -85,6 +89,7 @@ void GlWindow::resize(int width, int height) const {
         }
 
         SDL_ShowCursor(0);
+        SDL_WM_GrabInput(SDL_GRAB_ON);
 
         m_scene->reshape(width, height);
 
@@ -94,8 +99,18 @@ void GlWindow::resize(int width, int height) const {
 
 void GlWindow::start() {
         SDL_Event ev;
+        MotionState &motion = MotionState::getInstance();
+
+        bool first = true;
+        unsigned int ticks = 0;
+
+        m_ticks = SDL_GetTicks();
         
         while (m_running) {
+
+                motion.setYaw(0.0f);
+                motion.setPitch(0.0f);
+
                 while (SDL_PollEvent(&ev)) {
                         switch (ev.type) {
                                 case SDL_QUIT: {
@@ -113,13 +128,27 @@ void GlWindow::start() {
                                         m_actionManager->handleEvent(ev);
                                         break;
                                 }
+                                case SDL_MOUSEMOTION: {
+                                        if (first) {
+                                                first = false;
+                                        } else {
+                                                motion.setYaw((ev.motion.xrel * 0.5));
+                                                motion.setPitch((ev.motion.yrel * 0.5));
+                                        }
+                                        break;
+                                }
                                 default: {
                                         break;
                                 }
                         }
                 }
-                
-                m_scene->move();
+
+                ticks = SDL_GetTicks();
+                if (ticks - m_ticks > 25) {
+                        m_ticks = ticks;
+                        m_scene->move();
+                }
+
                 m_scene->display();
                 SDL_GL_SwapBuffers();
         }

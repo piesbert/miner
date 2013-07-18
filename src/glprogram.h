@@ -18,7 +18,9 @@
 #define LOCK_MINER_GLPROGRAM_H
 
 #include "glshader.h"
+#include "gldefine.h"
 
+#include <glm/glm.hpp>
 #include <vector>
 
 class GlProgram {
@@ -30,6 +32,24 @@ class GlProgram {
 
                 GLint getAttribId(const GLchar *) const;
                 GLint getUniformId(const GLchar *) const;
+
+                bool inUse() const;
+
+                GLPROGRAM_HEADER_SETTERS(GLfloat);
+                GLPROGRAM_HEADER_SETTERS(GLdouble);
+                GLPROGRAM_HEADER_SETTERS(GLint);
+                GLPROGRAM_HEADER_SETTERS(GLuint);
+
+                void setUniformMatrix2(const GLchar *, const GLfloat *, GLsizei count=1, GLboolean transpose=GL_FALSE);
+                void setUniformMatrix3(const GLchar *, const GLfloat *, GLsizei count=1, GLboolean transpose=GL_FALSE);
+                void setUniformMatrix4(const GLchar *, const GLfloat *, GLsizei count=1, GLboolean transpose=GL_FALSE);
+
+                void setUniform(const GLchar *, const glm::mat2 &, GLboolean transpose=GL_FALSE);
+                void setUniform(const GLchar *, const glm::mat3 &, GLboolean transpose=GL_FALSE);
+                void setUniform(const GLchar *, const glm::mat4 &, GLboolean transpose=GL_FALSE);
+
+                void setUniform(const GLchar *, const glm::vec3 &);
+                void setUniform(const GLchar *, const glm::vec4 &);
 
         private:
                 GLuint m_id;

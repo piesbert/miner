@@ -22,5 +22,6 @@
 #define APP_NAME "Miner"
 
 const std::string SHADERS_PATH = "@SHADERS_PATH@";
+const std::string TEXTURES_PATH = "@TEXTURES_PATH@";
 
 #endif //LOCK_MINEFREE_BUILD_H

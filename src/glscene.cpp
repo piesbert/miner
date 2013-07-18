@@ -17,6 +17,7 @@
 #include "glscene.h"
 #include "glcamera.h"
 #include "glprogram.h"
+#include "gltexture.h"
 #include "build.h"
 #include "config.h"
 #include "log.h"
@@ -31,67 +32,31 @@ GlScene::GlScene(Config *config) :
 m_camera(0),
 m_config(config),
 m_program(0) {
-          m_camera = new GlCamera();
+        m_camera = new GlCamera();
 }
 
 GlScene::~GlScene() {
+        delete m_texture;
         delete m_program;
         delete m_camera;
 }
 
 void GlScene::display() const {
-        const glm::vec3 &pos = m_camera->getPosition();
+        glClearColor(0.0, 0.0, 0.0, 0.0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glClearColor( 0.0, 0.0, 0.0, 0.0 );
-        glClear( GL_COLOR_BUFFER_BIT );
+        glUseProgram(m_program->getId());
+        m_program->setUniform("camera", m_camera->matrix());
 
-        glMatrixMode( GL_MODELVIEW );
-        glLoadIdentity();
-        //glMultMatrixf(glm::value_ptr(m_camera->matrix()));
-        glTranslatef(pos.x, pos.y, pos.z);
-        glColor3f( 1.0, 0.0, 0.0 );
-
-        glBegin( GL_LINES );
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, m_texture->getId());
+        m_program->setUniform("tex", 0);
         
-        glVertex3f( 1.0, 1.0, 1.0 );
-        glVertex3f( 1.0, - 1.0, 1.0 );
-
-        glVertex3f( 1.0, - 1.0, 1.0 );
-        glVertex3f( 1.0, - 1.0, - 1.0 );
-
-        glVertex3f( 1.0, - 1.0, - 1.0 );
-        glVertex3f( 1.0, 1.0, - 1.0 );
-
-        glVertex3f( 1.0, 1.0, - 1.0 );
-        glVertex3f( 1.0, 1.0, 1.0 );
-
-        glVertex3f( - 1.0, 1.0, 1.0 );
-        glVertex3f( - 1.0, - 1.0, 1.0 );
-
-        glVertex3f( - 1.0, - 1.0, 1.0 );
-        glVertex3f( - 1.0, - 1.0, - 1.0 );
-
-        glVertex3f( - 1.0, - 1.0, - 1.0 );
-        glVertex3f( - 1.0, 1.0, - 1.0 );
-
-        glVertex3f( - 1.0, 1.0, - 1.0 );
-        glVertex3f( - 1.0, 1.0, 1.0 );
-
-        glVertex3f( 1.0, 1.0, 1.0 );
-        glVertex3f( - 1.0, 1.0, 1.0 );
-
-        glVertex3f( 1.0, - 1.0, 1.0 );
-        glVertex3f( - 1.0, - 1.0, 1.0 );
-
-        glVertex3f( 1.0, - 1.0, - 1.0 );
-        glVertex3f( - 1.0, - 1.0, - 1.0 );
-
-        glVertex3f( 1.0, 1.0, - 1.0 );
-        glVertex3f( - 1.0, 1.0, - 1.0 );
-
-        glEnd();
-
-        glFlush();
+        glBindVertexArray(m_vao);
+        glDrawArrays(GL_TRIANGLES, 0, 3*2*6);
+        glBindVertexArray(0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glUseProgram(0);
 }
 
 void GlScene::reshape(int width, int height) {
@@ -109,6 +74,8 @@ void GlScene::reshape(int width, int height) {
         if (0 != m_program) {
                 display();
         }
+
+        m_camera->setAspect(aspect);
 }
 
 void GlScene::move() {
@@ -120,4 +87,67 @@ void GlScene::loadShaders() {
         m_shaders.push_back(GlShader::fromFile(SHADERS_PATH + "shader.frag", GL_FRAGMENT_SHADER));
 
         m_program = new GlProgram(m_shaders);
+
+        m_texture = new GlTexture("cliff_rock.png");
+        
+        
+        glGenVertexArrays(1, &m_vao);
+        glBindVertexArray(m_vao);
+
+        glGenBuffers(1, &m_vbo);
+        glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+
+        GLfloat vertexData[] = {
+                -1.0f,-1.0f,-1.0f, 0.0f, 0.0f,
+                1.0f,-1.0f,-1.0f, 1.0f, 0.0f,
+                -1.0f,-1.0f, 1.0f, 0.0f, 1.0f,
+                1.0f,-1.0f,-1.0f, 1.0f, 0.0f,
+                1.0f,-1.0f, 1.0f, 1.0f, 1.0f,
+                -1.0f,-1.0f, 1.0f, 0.0f, 1.0f,
+
+                -1.0f, 1.0f,-1.0f, 0.0f, 0.0f,
+                -1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+                1.0f, 1.0f,-1.0f, 1.0f, 0.0f,
+                1.0f, 1.0f,-1.0f, 1.0f, 0.0f,
+                -1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+                1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+
+                -1.0f,-1.0f, 1.0f, 1.0f, 0.0f,
+                1.0f,-1.0f, 1.0f, 0.0f, 0.0f,
+                -1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+                1.0f,-1.0f, 1.0f, 0.0f, 0.0f,
+                1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+                -1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+
+                -1.0f,-1.0f,-1.0f, 0.0f, 0.0f,
+                -1.0f, 1.0f,-1.0f, 0.0f, 1.0f,
+                1.0f,-1.0f,-1.0f, 1.0f, 0.0f,
+                1.0f,-1.0f,-1.0f, 1.0f, 0.0f,
+                -1.0f, 1.0f,-1.0f, 0.0f, 1.0f,
+                1.0f, 1.0f,-1.0f, 1.0f, 1.0f,
+
+                -1.0f,-1.0f, 1.0f, 0.0f, 1.0f,
+                -1.0f, 1.0f,-1.0f, 1.0f, 0.0f,
+                -1.0f,-1.0f,-1.0f, 0.0f, 0.0f,
+                -1.0f,-1.0f, 1.0f, 0.0f, 1.0f,
+                -1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+                -1.0f, 1.0f,-1.0f, 1.0f, 0.0f,
+
+                1.0f,-1.0f, 1.0f, 1.0f, 1.0f,
+                1.0f,-1.0f,-1.0f, 1.0f, 0.0f,
+                1.0f, 1.0f,-1.0f, 0.0f, 0.0f,
+                1.0f,-1.0f, 1.0f, 1.0f, 1.0f,
+                1.0f, 1.0f,-1.0f, 0.0f, 0.0f,
+                1.0f, 1.0f, 1.0f, 0.0f, 1.0f
+        };
+
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(m_program->getAttribId("vert"));
+        glVertexAttribPointer(m_program->getAttribId("vert"), 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), NULL);
+
+        glEnableVertexAttribArray(m_program->getAttribId("vertTexCoord"));
+        glVertexAttribPointer(m_program->getAttribId("vertTexCoord"), 2, GL_FLOAT, GL_TRUE, 5*sizeof(GLfloat), (const GLvoid*)(3 * sizeof(GLfloat)));
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
 }

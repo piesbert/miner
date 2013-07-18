@@ -23,6 +23,7 @@
 class GlCamera;
 class Config;
 class GlProgram;
+class GlTexture;
 
 class GlScene {
         public:
@@ -41,6 +42,10 @@ class GlScene {
 
                 GlProgram            *m_program;
                 std::vector<GlShader> m_shaders;
+                GlTexture            *m_texture;
+
+                GLuint m_vao;
+                GLuint m_vbo;
 
                 GlScene(GlScene const&); // do not implement
                 GlScene& operator=(GlScene const&); // do not implement
