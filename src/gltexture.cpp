@@ -20,11 +20,11 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 
-GlTexture::GlTexture(const std::string &name, GLint minMagFiler, GLint wrapMode) {
+GlTexture::GlTexture(const std::string &name, const std::string &path, GLint minMagFiler, GLint wrapMode) {
         SDL_Surface *image;
         int mode;
 
-        const char *file = std::string(TEXTURES_PATH + name).c_str();
+        const char *file = std::string(path + name).c_str();
 
         image = IMG_Load(file);
 

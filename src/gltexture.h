@@ -17,12 +17,14 @@
 #if !defined(LOCK_MINER_GLTEXTURE_H)
 #define LOCK_MINER_GLTEXTURE_H
 
+#include "build.h"
+
 #include <GL/glew.h>
 #include <string>
 
 class GlTexture {
         public:
-                GlTexture(const std::string &, GLint minMagFiler = GL_LINEAR, GLint wrapMode = GL_CLAMP_TO_EDGE);
+                GlTexture(const std::string &, const std::string &path = TEXTURES_PATH, GLint minMagFiler = GL_LINEAR, GLint wrapMode = GL_CLAMP_TO_EDGE);
                 virtual ~GlTexture();
 
                 GLuint getId() const;

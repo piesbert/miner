@@ -7,6 +7,7 @@ set(SOURCE_FILES
                 glshader.cpp
                 glprogram.cpp
                 gltexture.cpp
+                glcube.cpp
                 action.cpp
                 actionmanager.cpp
                 motionstate.cpp
