@@ -21,8 +21,13 @@
 
 class GlTexture;
 
+/**
+ * Node surface.
+ * This class manage information about single block way of look.
+ */
 class GlCube {
         public:
+                /// Values representing sides (walls) of block
                 enum Side {
                         SIDE_TOP = 0,
                         SIDE_BOTTOM,
@@ -39,10 +44,6 @@ class GlCube {
                 void setTexture(const std::string &name, Side side = SIDE_MAX); 
 
         private:
-                int m_x;
-                int m_y;
-                int m_z;
-
                 GlTexture *m_textures[SIDE_MAX];
 
                 GlCube(GlCube const&); // do not implement
